@@ -121,7 +121,7 @@ or newer is required for `ssl_reject_handshake`.
 Karisma Technologies installs this on production Odoo servers: tuning the
 limits for your office network, switching Odoo to workers, Telegram alerts,
 encrypted off-site backups, and regular server status reports. Contact us at
-[prautomo@karismatech.com](mailto:prautomo@karismatech.com) or visit
+[info@karismatech.com](mailto:info@karismatech.com) or visit
 [karismatech.com](https://karismatech.com).
 
 ## License

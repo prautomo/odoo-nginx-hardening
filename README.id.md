@@ -122,7 +122,7 @@ Karisma Technologies bisa memasang pengamanan ini di server Odoo produksi
 Anda: menyetel batas sesuai jaringan kantor, memindahkan Odoo ke mode
 multi-proses, memasang peringatan Telegram, backup terenkripsi ke cloud, dan
 laporan status server berkala. Hubungi kami di
-[prautomo@karismatech.com](mailto:prautomo@karismatech.com) atau kunjungi
+[info@karismatech.com](mailto:info@karismatech.com) atau kunjungi
 [karismatech.com](https://karismatech.com).
 
 ## Lisensi
