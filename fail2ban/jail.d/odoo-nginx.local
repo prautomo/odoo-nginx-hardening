@@ -1,0 +1,24 @@
+# Ban IPs that keep hitting the nginx limits, and SSH password guessers.
+# Copy to /etc/fail2ban/jail.d/odoo-nginx.local together with
+# filter.d/odoo-nginx-limit.conf, then: systemctl restart fail2ban
+
+[DEFAULT]
+# Never ban yourself: add your office NAT and monitoring IPs.
+ignoreip = 127.0.0.1/8 ::1
+bantime = 1h
+bantime.increment = true
+findtime = 10m
+
+[odoo-nginx-limit]
+enabled  = true
+filter   = odoo-nginx-limit
+port     = http,https
+logpath  = /var/log/nginx/odoo.error.log
+# A normal page load never gets limited; 20 rejections in 10 minutes is a bot.
+maxretry = 20
+
+[sshd]
+enabled  = true
+logpath  = /var/log/auth.log
+maxretry = 3
+findtime = 1h

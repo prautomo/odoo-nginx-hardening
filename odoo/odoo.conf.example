@@ -1,0 +1,45 @@
+[options]
+; Settings that matter for running Odoo safely behind nginx.
+; Merge into your existing odoo.conf; keep your own db_* and paths.
+
+; Trust X-Forwarded-* headers from nginx.
+proxy_mode = True
+
+; No public database manager or database list.
+list_db = False
+dbfilter = ^odoo\.example\.com$
+
+; Listen on localhost only; nginx is the only way in.
+; In Docker, keep Odoo on 0.0.0.0 inside the container and publish the
+; ports to the host as 127.0.0.1:8069 and 127.0.0.1:8072 instead.
+http_interface = 127.0.0.1
+
+; --- Multi-process mode ------------------------------------------------
+; With workers = 0 (the default) one process serves every request and all
+; requests share one database pool of db_maxconn connections. A burst of
+; ~150 parallel requests then exhausts it: "The Connection Pool Is Full".
+; With workers > 0 each worker is its own process with its own small pool,
+; and a burst can only tie up the workers it lands on.
+;
+; workers: (2 x CPU cores) + 1 is the usual starting point; lower it if
+; RAM is tight (budget ~ 300-500 MB per worker under load).
+workers = 5
+max_cron_threads = 1
+
+; Real-time bus (gevent) port. Odoo 12-15: longpolling_port.
+; Odoo 16+: gevent_port. nginx sends /longpolling (or /websocket) here.
+longpolling_port = 8072
+; gevent_port = 8072
+
+; Connection budget: every process (workers + cron threads + 1 gevent)
+; may open up to db_maxconn connections. Keep the total below
+; PostgreSQL max_connections (100 by default) minus a reserve:
+;   (5 + 1 + 1) x 12 = 84  <  100
+db_maxconn = 12
+
+; Kill runaway requests instead of letting them pile up.
+limit_time_cpu = 120
+limit_time_real = 240
+limit_memory_soft = 671088640
+limit_memory_hard = 805306368
+limit_request = 8192
